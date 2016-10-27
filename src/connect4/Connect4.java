@@ -5,6 +5,7 @@
  */
 package connect4;
 
+import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,8 +35,12 @@ static ColorPicker cp;
 	}
 
 	public void draw(Stage stage) throws Exception {
-		int rows = 50;
-		int columns = 50;
+                List<String> params = getParameters().getUnnamed();
+            
+		int rows = Integer.parseInt(params.get(0));
+                if(0 == rows)
+                    rows = 6;
+		int columns = rows;
 
 		stage.setTitle("LiteBrite");
 		VBox vbox = new VBox();
@@ -105,7 +110,21 @@ static ColorPicker cp;
 			}
 		});
 		vbox.getChildren().add(grid);
-		Scene scene = new Scene(vbox, (columns * 10) + 20, (rows * 10) + 55);
+                
+                // minimum width and height to 100 so the window isnt too small
+                int sceneWidth, sceneHeight;
+                if((columns * 10) + 20 < 500) {
+                    sceneWidth = 500;
+                } else {
+                    sceneWidth = (columns * 10) + 20;
+                }
+                if((rows * 10) + 55 < 500) {
+                    sceneHeight = 500;
+                } else {
+                    sceneHeight = (rows * 10) + 55;
+                }
+                
+		Scene scene = new Scene(vbox, sceneWidth, sceneHeight);
 		scene.getStylesheets().add(Connect4.class.getResource("resources/game.css").toExternalForm());
 		stage.setScene(scene);
 		stage.show();
