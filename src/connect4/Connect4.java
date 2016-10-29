@@ -36,11 +36,21 @@ static ColorPicker cp;
 
 	public void draw(Stage stage) throws Exception {
                 List<String> params = getParameters().getUnnamed();
-            
-		int rows = Integer.parseInt(params.get(0));
-                if(0 == rows)
-                    rows = 6;
-		int columns = rows;
+                
+                // Set size of board and win condition from params
+                int rows, columns, connectWin;
+                if(params.size() == 2) {
+                    rows = Integer.parseInt(params.get(0));
+                    if(0 == rows)
+                        rows = 6;
+                    columns = rows;
+                    connectWin = Integer.parseInt(params.get(1));
+                    if(0 == connectWin || 1 == connectWin)
+                        connectWin = rows;
+                } else {
+                    rows = columns = 6;
+                    connectWin = 4;
+                }
 
 		stage.setTitle("LiteBrite");
 		VBox vbox = new VBox();
@@ -100,15 +110,13 @@ static ColorPicker cp;
 				grid.add(pane, i, j);
 			}
 		}
-		reset.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				try {
-					draw(stage);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		reset.setOnAction((ActionEvent event) -> {
+                    try {
+                        draw(stage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 		vbox.getChildren().add(grid);
                 
                 // minimum width and height to 100 so the window isnt too small
