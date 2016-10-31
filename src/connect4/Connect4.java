@@ -5,6 +5,7 @@
  */
 package connect4;
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -27,7 +28,13 @@ import javafx.stage.Stage;
  * @author Derek
  */
 public class Connect4 extends Application {
-static ColorPicker cp;
+	static ColorPicker cp;
+	Presenter presenter;
+
+	public Connect4(Presenter presenter) {
+		this.presenter = presenter;
+		presenter.attachView(this);
+	}
 
 	@Override
 	public void start(final Stage stage) throws Exception {
@@ -35,22 +42,26 @@ static ColorPicker cp;
 	}
 
 	public void draw(Stage stage) throws Exception {
-                List<String> params = getParameters().getUnnamed();
-                
-                // Set size of board and win condition from params
-                int rows, columns, connectWin;
-                if(params.size() == 2) {
-                    rows = Integer.parseInt(params.get(0));
-                    if(0 == rows)
-                        rows = 6;
-                    columns = rows;
-                    connectWin = Integer.parseInt(params.get(1));
-                    if(0 == connectWin || 1 == connectWin)
-                        connectWin = rows;
-                } else {
-                    rows = columns = 6;
-                    connectWin = 4;
-                }
+		ArrayList<String>  params = new ArrayList<String>();
+		params.add("6");
+		params.add("4");
+		
+//		List<String> params = getParameters().getUnnamed();
+
+		// Set size of board and win condition from params
+		int rows, columns, connectWin;
+		if (params.size() == 2) {
+			rows = Integer.parseInt(params.get(0));
+			if (0 == rows)
+				rows = 6;
+			columns = rows;
+			connectWin = Integer.parseInt(params.get(1));
+			if (0 == connectWin || 1 == connectWin)
+				connectWin = rows;
+		} else {
+			rows = columns = 6;
+			connectWin = 4;
+		}
 
 		stage.setTitle("LiteBrite");
 		VBox vbox = new VBox();
@@ -111,27 +122,28 @@ static ColorPicker cp;
 			}
 		}
 		reset.setOnAction((ActionEvent event) -> {
-                    try {
-                        draw(stage);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+			try {
+				draw(stage);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 		vbox.getChildren().add(grid);
-                
-                // minimum width and height to 100 so the window isnt too small
-                int sceneWidth, sceneHeight;
-                if((columns * 10) + 20 < 500) {
-                    sceneWidth = 500;
-                } else {
-                    sceneWidth = (columns * 10) + 20;
-                }
-                if((rows * 10) + 55 < 500) {
-                    sceneHeight = 500;
-                } else {
-                    sceneHeight = (rows * 10) + 55;
-                }
-                
+
+		// minimum width and height to 100 so the window isnt too small
+		int sceneWidth, sceneHeight;
+		if ((columns * 10) + 20 < 500) {
+			sceneWidth = 500;
+		} else {
+			sceneWidth = (columns * 10) + 20;
+		}
+		if ((rows * 10) + 55 < 500) {
+			sceneHeight = 500;
+		} else {
+			sceneHeight = (rows * 10) + 55;
+		}
+
 		Scene scene = new Scene(vbox, sceneWidth, sceneHeight);
 		scene.getStylesheets().add(Connect4.class.getResource("resources/game.css").toExternalForm());
 		stage.setScene(scene);
@@ -151,5 +163,4 @@ static ColorPicker cp;
 		Application.launch(arguments);
 	}
 
-    
 }
