@@ -3,7 +3,7 @@ package connect4;
 public class Player {
 	private int winCount;
 	private String name;
-
+	
 	public Player(String name) {
 		this.name = name;
 		setWinCount(0);

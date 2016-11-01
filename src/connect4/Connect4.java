@@ -8,19 +8,23 @@ package connect4;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
+
+import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 import javafx.stage.Stage;
 
 /**
@@ -28,8 +32,10 @@ import javafx.stage.Stage;
  * @author Derek
  */
 public class Connect4 extends Application {
-	static ColorPicker cp;
+	GridPane grid;
 	Presenter presenter;
+	Label p1;
+	Label p2;
 
 	public Connect4(Presenter presenter) {
 		this.presenter = presenter;
@@ -42,11 +48,11 @@ public class Connect4 extends Application {
 	}
 
 	public void draw(Stage stage) throws Exception {
-		ArrayList<String>  params = new ArrayList<String>();
+		ArrayList<String> params = new ArrayList<String>();
 		params.add("6");
 		params.add("4");
-		
-//		List<String> params = getParameters().getUnnamed();
+
+		// List<String> params = getParameters().getUnnamed();
 
 		// Set size of board and win condition from params
 		int rows, columns, connectWin;
@@ -62,17 +68,25 @@ public class Connect4 extends Application {
 			rows = columns = 6;
 			connectWin = 4;
 		}
-
-		stage.setTitle("LiteBrite");
+		// pushes the grid data to the back end 2d array.
+		presenter.pushGridValues(rows, columns);
+		stage.setTitle("ConnectX");
 		VBox vbox = new VBox();
 		Button reset = new Button("reset");
+		// p1 is to be set to whatever given input for player names
+		// p2 is to be set to whatever given input for player names
+		p1 = new Label("Player 1");
+		p2 = new Label("Player 2");
+		// passing players names to the menumodel
+		presenter.enterPlayer(p1.getText());
+		presenter.enterPlayer(p2.getText());
 
 		ToolBar tb = new ToolBar();
-		cp = new ColorPicker();
-		vbox.getChildren().add(tb);
-		tb.getItems().addAll(cp, reset);
 
-		GridPane grid = new GridPane();
+		vbox.getChildren().add(tb);
+		tb.getItems().addAll(reset, p1, p2);
+
+		grid = new GridPane();
 		grid.getStyleClass().add("game-grid");
 
 		for (int i = 0; i < columns; i++) {
@@ -88,28 +102,16 @@ public class Connect4 extends Application {
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < rows; j++) {
 				Pane pane = new Pane();
-				// implemented for Extra Credit
-				// 1) first click draws rectangle to pane with the current color
-				// selected
-				// ****two cases after first click on a pane****
-				// 2) if clicked again with the same color selected, it will
-				// reset (removing the rectangle)
-				// 3) if clicked again with a different color, it will remove
-				// the current rectangle and then add a rectangle of the new
-				// color
+
 				pane.setOnMouseReleased(e -> {
-					int count = (pane.getChildren().isEmpty()) ? 1 : 0;
-					if (count == 1) {
-						pane.getChildren().add(Anims.getAtoms());
-					} else {
-						Rectangle r = (Rectangle) pane.getChildren().get(0);
-						pane.getChildren().removeAll(pane.getChildren());
-						if (r.getFill() != cp.getValue()) {
-							pane.getChildren().add(Anims.getAtoms());
-						}
-					}
+					// paints a circle on every click on the given grid
+					// pane.getChildren().add(paintCircle());
+					System.out.println(GridPane.getColumnIndex(pane));
+					// updates the grid;
+					presenter.updateModelGrid(GridPane.getColumnIndex(pane));
 
 				});
+
 				pane.getStyleClass().add("game-grid-cell");
 				if (i == 0) {
 					pane.getStyleClass().add("first-column");
@@ -119,8 +121,10 @@ public class Connect4 extends Application {
 				}
 
 				grid.add(pane, i, j);
+
 			}
 		}
+
 		reset.setOnAction((ActionEvent event) -> {
 			try {
 				draw(stage);
@@ -129,6 +133,7 @@ public class Connect4 extends Application {
 				e.printStackTrace();
 			}
 		});
+
 		vbox.getChildren().add(grid);
 
 		// minimum width and height to 100 so the window isnt too small
@@ -150,17 +155,34 @@ public class Connect4 extends Application {
 		stage.show();
 	}
 
-	public static class Anims {
+	// finds the node clicked and returned its index for the backend to update
+	// the 2d int array.
+	public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+		Node result = null;
+		ObservableList<Node> childrens = gridPane.getChildren();
 
-		public static Node getAtoms() {
-			Rectangle rect = new Rectangle(9, 9);
-			rect.setFill(cp.getValue());
-			return rect;
+		for (Node node : childrens) {
+			if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
 		}
+
+		return result;
 	}
 
-	public static void main(final String[] arguments) {
-		Application.launch(arguments);
+	// paints the circle onto the grid, while also updating the back end "Turn".
+	public void paintCircle(int row, int column) {
+		Circle rect = new Circle(4.5, 4.5, 4.5);
+		if (presenter.getTurn().equals(p1.getText()))
+			rect.setFill(Color.YELLOW);
+		else {
+			rect.setFill(Color.RED);
+		}
+		presenter.changeTurn();
+		Pane p = (Pane) getNodeByRowColumnIndex(row, column, grid);
+		p.getChildren().add(rect);
+
 	}
 
 }
