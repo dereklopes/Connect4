@@ -72,5 +72,13 @@ public class MenuModel {
 		}
 		return row;
 	}
+        
+    /**
+     * Checks to see if a connection has been made.
+     * @return The player number of the winner or 0 if no winner was found.
+     */
+    public int checkWin() {
+            return 0;
+        }
 
 }

@@ -5,7 +5,6 @@
  */
 package connect4;
 
-import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -50,6 +49,7 @@ public class Connect4 extends Application {
 	}
 
 	public void draw(Stage stage) throws Exception {
+                System.out.println(com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
 
 		// Set size of board and win condition from params
 		int rows, columns, connectWin;
@@ -106,7 +106,17 @@ public class Connect4 extends Application {
 					System.out.println(GridPane.getColumnIndex(pane));
 					// updates the grid;
 					presenter.updateModelGrid(GridPane.getColumnIndex(pane));
-
+                                        // Check for a winner
+                                        int playerWin = presenter.checkWin();
+                                        if(playerWin != 0) {
+                                            // display a win message
+                                            // reset grid
+                                            try {
+                                        	draw(stage);
+                                            } catch (Exception ex) {
+                                                ex.printStackTrace();
+                                            }
+                                        }
 				});
 
 				pane.getStyleClass().add("game-grid-cell");

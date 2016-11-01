@@ -39,4 +39,12 @@ public class Presenter {
 		view.paintCircle(row, column);
 		}
 	}
+        
+        /**
+         * Checks for a winner.
+         * @return Player number of winner or 0 for no winner.
+        */
+        int checkWin() {
+            return mm.checkWin();
+        }
 }
