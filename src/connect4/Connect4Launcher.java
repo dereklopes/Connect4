@@ -20,7 +20,7 @@ public class Connect4Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Connect4 app = new Connect4(new Presenter());
+        Connect4 app = new Connect4(new Presenter(), getParameters().getUnnamed());
         app.start(primaryStage); //To change body of generated methods, choose Tools | Templates.
     }
     

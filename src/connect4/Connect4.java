@@ -34,11 +34,13 @@ import javafx.stage.Stage;
 public class Connect4 extends Application {
 	GridPane grid;
 	Presenter presenter;
+        List<String> params;
 	Label p1;
 	Label p2;
 
-	public Connect4(Presenter presenter) {
+	public Connect4(Presenter presenter, List<String> params) {
 		this.presenter = presenter;
+                this.params = params;
 		presenter.attachView(this);
 	}
 
@@ -48,11 +50,6 @@ public class Connect4 extends Application {
 	}
 
 	public void draw(Stage stage) throws Exception {
-		ArrayList<String> params = new ArrayList<String>();
-		params.add("6");
-		params.add("4");
-
-		// List<String> params = getParameters().getUnnamed();
 
 		// Set size of board and win condition from params
 		int rows, columns, connectWin;
