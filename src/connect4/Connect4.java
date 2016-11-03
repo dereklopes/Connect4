@@ -36,8 +36,7 @@ public class Connect4 extends Application {
 	GridPane grid;
 	Presenter presenter;
         List<String> params;
-	Label p1;
-	Label p2;
+	Label currentPlayer;
 
 	public Connect4(Presenter presenter, List<String> params) {
 		this.presenter = presenter;
@@ -69,16 +68,16 @@ public class Connect4 extends Application {
 		Button reset = new Button("reset");
 		// p1 is to be set to whatever given input for player names
 		// p2 is to be set to whatever given input for player names
-		p1 = new Label("Player 1");
-		p2 = new Label("Player 2");
 		// passing players names to the menumodel
-		presenter.enterPlayer(p1.getText());
-		presenter.enterPlayer(p2.getText());
+		presenter.enterPlayer("Player 1");
+		presenter.enterPlayer("Player 2");
+                currentPlayer = new Label(
+                        "Current turn: " + presenter.getTurn());
 
 		ToolBar tb = new ToolBar();
 
 		vbox.getChildren().add(tb);
-		tb.getItems().addAll(reset, p1, p2);
+		tb.getItems().addAll(reset, currentPlayer);
 
 		grid = new GridPane();
 		grid.getStyleClass().add("game-grid");
@@ -104,6 +103,9 @@ public class Connect4 extends Application {
 //					System.out.println(GridPane.getColumnIndex(pane));
 					// updates the grid;
 					presenter.updateModelGrid(GridPane.getColumnIndex(pane));
+                                        // updates currentPlayer
+                                        currentPlayer.setText(
+                                                "Current turn: " + presenter.getTurn());
                                         // Check for a winner
                                         int playerWin = presenter.checkWin(connectWin);
                                         if(playerWin != 0) {
@@ -189,7 +191,7 @@ public class Connect4 extends Application {
 	// paints the circle onto the grid, while also updating the back end "Turn".
 	public void paintCircle(int row, int column) {
 		Circle rect = new Circle(25, 25, 25);
-		if (presenter.getTurn().equals(p1.getText()))
+		if (presenter.getTurn().equals("Player 1"))
 			rect.setFill(Color.YELLOW);
 		else {
 			rect.setFill(Color.RED);
