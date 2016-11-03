@@ -23,6 +23,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import javafx.stage.Stage;
 
@@ -49,18 +51,13 @@ public class Connect4 extends Application {
 	}
 
 	public void draw(Stage stage) throws Exception {
-                System.out.println(com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
 
 		// Set size of board and win condition from params
-		int rows, columns, connectWin;
+		final int rows, columns, connectWin;
 		if (params.size() == 2) {
 			rows = Integer.parseInt(params.get(0));
-			if (0 == rows)
-				rows = 6;
 			columns = rows;
 			connectWin = Integer.parseInt(params.get(1));
-			if (0 == connectWin || 1 == connectWin)
-				connectWin = rows;
 		} else {
 			rows = columns = 6;
 			connectWin = 4;
@@ -103,13 +100,19 @@ public class Connect4 extends Application {
 				pane.setOnMouseReleased(e -> {
 					// paints a circle on every click on the given grid
 					// pane.getChildren().add(paintCircle());
-					System.out.println(GridPane.getColumnIndex(pane));
+//					System.out.println(GridPane.getColumnIndex(pane));
 					// updates the grid;
 					presenter.updateModelGrid(GridPane.getColumnIndex(pane));
                                         // Check for a winner
-                                        int playerWin = presenter.checkWin();
+                                        int playerWin = presenter.checkWin(connectWin);
                                         if(playerWin != 0) {
                                             // display a win message
+                                            Alert winAlert = new Alert(AlertType.INFORMATION);
+                                            winAlert.setTitle("Game Over!");
+                                            winAlert.setHeaderText(null);
+                                            winAlert.setContentText(
+                                                    "Player " + playerWin + " wins!");
+                                            winAlert.showAndWait();
                                             // reset grid
                                             try {
                                         	draw(stage);

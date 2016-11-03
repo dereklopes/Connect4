@@ -27,13 +27,13 @@ public class Presenter {
 
 	void pushGridValues(int row, int column) {
 		mm.setGrid(row, column);
-		System.out.println("Pushed: " + row + " " + column);
+//		System.out.println("Pushed: " + row + " " + column);
 	}
 
 	void updateModelGrid(int column){
 		int row = mm.updateGrid(column);
 		if (row == -1){
-			System.out.println("You can't use column anymore");
+//			System.out.println("You can't use column anymore");
 		}
 		else {
 		view.paintCircle(row, column);
@@ -44,7 +44,7 @@ public class Presenter {
          * Checks for a winner.
          * @return Player number of winner or 0 for no winner.
         */
-        int checkWin() {
-            return mm.checkWin();
+        int checkWin(int winCondition) {
+            return mm.checkWin(winCondition);
         }
 }
