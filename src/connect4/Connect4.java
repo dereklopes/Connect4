@@ -96,6 +96,7 @@ public class Connect4 extends Application {
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < rows; j++) {
 				Pane pane = new Pane();
+                                pane.setMinSize(50, 50);
 
 				pane.setOnMouseReleased(e -> {
 					// paints a circle on every click on the given grid
@@ -148,16 +149,20 @@ public class Connect4 extends Application {
 
 		// minimum width and height to 100 so the window isnt too small
 		int sceneWidth, sceneHeight;
-		if ((columns * 10) + 20 < 500) {
+                System.out.println(columns + "x" + rows);
+                System.out.println(((columns * 100) + 20));
+		if ((columns * 100) + 20 < 500) {
 			sceneWidth = 500;
 		} else {
-			sceneWidth = (columns * 10) + 20;
+			sceneWidth = (columns * 100) + 20;
 		}
-		if ((rows * 10) + 55 < 500) {
+		if ((rows * 100) + 55 < 500) {
 			sceneHeight = 500;
 		} else {
-			sceneHeight = (rows * 10) + 55;
+			sceneHeight = (rows * 100) + 20;
 		}
+                
+                grid.setMinHeight(sceneHeight);
 
 		Scene scene = new Scene(vbox, sceneWidth, sceneHeight);
 		scene.getStylesheets().add(Connect4.class.getResource("resources/game.css").toExternalForm());
@@ -183,7 +188,7 @@ public class Connect4 extends Application {
 
 	// paints the circle onto the grid, while also updating the back end "Turn".
 	public void paintCircle(int row, int column) {
-		Circle rect = new Circle(4.5, 4.5, 4.5);
+		Circle rect = new Circle(25, 25, 25);
 		if (presenter.getTurn().equals(p1.getText()))
 			rect.setFill(Color.YELLOW);
 		else {

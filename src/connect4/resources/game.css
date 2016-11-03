@@ -9,11 +9,15 @@ and open the template in the editor.
 */
 .game-grid {
     -fx-background-color: gray ;
-    -fx-padding: 10 ;
+    -fx-padding: 50 ;
+    -fx-alignment: center ;
+    -fx-hgap: 50 ;
+    -fx-vgap: 50 ;
 }
 .game-grid-cell {
-    -fx-background-color: gray, black ;
+    -fx-background-color: black ;
     -fx-background-insets: 0, 0 1 1 0 ;
+    -fx-background-radius: 1000 ;
 }
 .game-grid-cell.first-row {
     -fx-background-insets: 0, 1 1 1 0 ;
