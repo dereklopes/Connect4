@@ -9,6 +9,7 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -37,6 +38,7 @@ public class Connect4 extends Application {
 	Presenter presenter;
         List<String> params;
 	Label currentPlayer;
+        int slotSize, pieceRadius;
 
 	public Connect4(Presenter presenter, List<String> params) {
 		this.presenter = presenter;
@@ -94,11 +96,15 @@ public class Connect4 extends Application {
 			RowConstraints row = new RowConstraints(10);
 			grid.getRowConstraints().add(row);
 		}
-
+                
+                slotSize = 500 / rows;
+                System.out.println(rows + "x" + columns + " @ " + slotSize);
+                grid.gridLinesVisibleProperty().set(true);
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < rows; j++) {
 				Pane pane = new Pane();
-                                pane.setMinSize(50, 50);
+                                pane.setMinSize(slotSize, slotSize);
+                                pane.setMaxSize(slotSize, slotSize);
 
 				pane.setOnMouseReleased(e -> {
 					// paints a circle on every click on the given grid
@@ -130,7 +136,8 @@ public class Connect4 extends Application {
 
 				pane.getStyleClass().add("game-grid-cell");
 				if (i == 0) {
-					pane.getStyleClass().add("first-column");
+//					pane.getStyleClass().add("first-column");
+                                        pane.setOpacity(.2);
 				}
 				if (j == 0) {
 					pane.getStyleClass().add("first-row");
@@ -149,30 +156,40 @@ public class Connect4 extends Application {
 				e.printStackTrace();
 			}
 		});
-
+                
+                grid.setHgap(slotSize);
+                grid.setVgap(slotSize);
+                grid.setMinSize(500, 500);
+                grid.setMaxSize(500, 500);
 		vbox.getChildren().add(grid);
 
 		// minimum width and height to 100 so the window isnt too small
 		int sceneWidth, sceneHeight;
-                System.out.println(columns + "x" + rows);
-                System.out.println(((columns * 100) + 20));
-		if ((columns * 100) + 20 < 500) {
-			sceneWidth = 500;
-		} else {
-			sceneWidth = (columns * 100) + 20;
-		}
-		if ((rows * 100) + 55 < 500) {
-			sceneHeight = 500;
-		} else {
-			sceneHeight = (rows * 100) + 20;
-		}
-                
-                grid.setMinHeight(sceneHeight);
+                sceneWidth = 500;
+                sceneHeight = 535;
+//                System.out.println(columns + "x" + rows);
+//                System.out.println(((columns * 100) + 20));
+//		if ((columns * 100) + 20 < 500) {
+//			sceneWidth = 500;
+//		} else {
+//			sceneWidth = (columns * 100) + 20;
+//		}
+//		if ((rows * 100) + 55 < 500) {
+//			sceneHeight = 500;
+//		} else {
+//			sceneHeight = (rows * 100) + 20;
+//		}
+//                
+//                grid.setMinHeight(sceneHeight);
 
 		Scene scene = new Scene(vbox, sceneWidth, sceneHeight);
 		scene.getStylesheets().add(Connect4.class.getResource("resources/game.css").toExternalForm());
 		stage.setScene(scene);
 		stage.show();
+                System.out.println("Grid: " + grid.getHeight() + "x" + grid.getWidth());
+                System.out.println("Toolbar: " + tb.getHeight() + "x" + tb.getWidth());
+                System.out.println("Window: " + scene.getHeight() + "x" + scene.getWidth());
+
 	}
 
 	// finds the node clicked and returned its index for the backend to update
@@ -193,7 +210,8 @@ public class Connect4 extends Application {
 
 	// paints the circle onto the grid, while also updating the back end "Turn".
 	public void paintCircle(int row, int column) {
-		Circle rect = new Circle(25, 25, 25);
+                pieceRadius = slotSize / 2;
+		Circle rect = new Circle(pieceRadius, pieceRadius, pieceRadius);
 		if (presenter.getTurn().equals("Player 1"))
 			rect.setFill(Color.YELLOW);
 		else {

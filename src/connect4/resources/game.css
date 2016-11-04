@@ -9,22 +9,26 @@ and open the template in the editor.
 */
 .game-grid {
     -fx-background-color: gray ;
-    -fx-padding: 50 ;
-    -fx-alignment: center ;
-    -fx-hgap: 50 ;
-    -fx-vgap: 50 ;
+    /*-fx-padding: 40 ;*/
+    /*-fx-alignment: center ;*/
+    /*-fx-hgap: 50 ;*/
+    /*-fx-vgap: 50 ;*/
 }
 .game-grid-cell {
     -fx-background-color: black ;
-    -fx-background-insets: 0, 0 1 1 0 ;
-    -fx-background-radius: 1000 ;
+    -fx-background-insets: 0;
+/*    -fx-background-radius: 1000 ;*/
+    -fx-opacity: .2;
 }
 .game-grid-cell.first-row {
     -fx-background-insets: 0, 1 1 1 0 ;
+    -fx-opacity: .2;
 }
 .game-grid-cell.first-column {
     -fx-background-insets: 0, 0 1 1 1 ;
+    -fx-opacity: .2;
 }
 .game-grid-cell.first-row.first-column {
     -fx-background-insets: 0, 1 ;
+    -fx-opacity: .2;
 }
