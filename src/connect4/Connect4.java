@@ -56,14 +56,17 @@ public class Connect4 extends Application {
 		if (params.size() == 2) {
 			rows = Integer.parseInt(params.get(0));
 			columns = rows;
-			connectWin = Integer.parseInt(params.get(1));
+                        if(Integer.parseInt(params.get(1)) > columns)
+                            connectWin = columns;
+                        else
+                            connectWin = Integer.parseInt(params.get(1));
 		} else {
 			rows = columns = 6;
 			connectWin = 4;
 		}
 		// pushes the grid data to the back end 2d array.
 		presenter.pushGridValues(rows, columns);
-		stage.setTitle("ConnectX");
+		stage.setTitle("Connect" + connectWin);
 		VBox vbox = new VBox();
 		Button reset = new Button("reset");
 		// p1 is to be set to whatever given input for player names
