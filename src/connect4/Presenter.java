@@ -1,12 +1,12 @@
 package connect4;
 
 public class Presenter {
-	Connect4 view;
-	MenuModel mm;
+	Connect4GUI view;
+	GameModel mm;
 
-	void attachView(Connect4 view) {
+	void attachView(Connect4GUI view) {
 		this.view = view;
-		mm = new MenuModel();
+		mm = new GameModel();
 	}
 
 	void enterPlayer(String name) {
