@@ -20,11 +20,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 
 import javafx.stage.Stage;
 
@@ -39,22 +39,25 @@ public class Connect4GUI extends Application {
     Label currentPlayer;
 
     public Connect4GUI(Presenter presenter, List<String> params) {
-            this.presenter = presenter;
-            this.params = params;
-            presenter.attachView(this);
+        this.presenter = presenter;
+        this.params = params;
+        presenter.attachView(this);
     }
 
     @Override
     public void start(final Stage stage) throws Exception {
-            draw(stage);
+        draw(stage);
     }
 
     public void draw(Stage stage) throws Exception {
 
-        // Set size of board and win condition from params
+        // Set size of board (max 20) and win condition (max board size) from params
         final int rows, columns, connectWin;
         if (params.size() == 2) {
-            rows = Integer.parseInt(params.get(0));
+            if(Integer.parseInt(params.get(0)) > 20)
+                rows = 20;
+            else
+                rows = Integer.parseInt(params.get(0));
             columns = rows;
             if(Integer.parseInt(params.get(1)) > columns)
                 connectWin = columns;
@@ -67,7 +70,7 @@ public class Connect4GUI extends Application {
         // pushes the grid data to the back end 2d array.
         presenter.pushGridValues(rows, columns);
         stage.setTitle("Connect" + connectWin);
-        VBox vbox = new VBox();
+        BorderPane borderPane = new BorderPane();
         Button reset = new Button("reset");
         // p1 is to be set to whatever given input for player names
         // p2 is to be set to whatever given input for player names
@@ -79,7 +82,7 @@ public class Connect4GUI extends Application {
 
         ToolBar tb = new ToolBar();
 
-        vbox.getChildren().add(tb);
+        borderPane.setTop(tb);
         tb.getItems().addAll(reset, currentPlayer);
 
         grid = new GridPane();
@@ -98,7 +101,7 @@ public class Connect4GUI extends Application {
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
                 Pane pane = new Pane();
-                pane.setMinSize(50, 50);
+                pane.setMinSize(25, 25);
 
                 pane.setOnMouseReleased(e -> {
                     // paints a circle on every click on the given grid
@@ -149,7 +152,7 @@ public class Connect4GUI extends Application {
             }
         });
 
-        vbox.getChildren().add(grid);
+        borderPane.setCenter(grid);
 
         // minimum width and height to 100 so the window isnt too small
         int sceneWidth, sceneHeight;
@@ -158,17 +161,15 @@ public class Connect4GUI extends Application {
         if ((columns * 100) + 20 < 500) {
             sceneWidth = 500;
         } else {
-            sceneWidth = (columns * 100) + 20;
+            sceneWidth = (columns * 40) + 10;
         }
         if ((rows * 100) + 55 < 500) {
             sceneHeight = 500;
         } else {
-            sceneHeight = (rows * 100) + 20;
+            sceneHeight = (rows * 40) + 45;
         }
-
-        grid.setMinHeight(sceneHeight);
-
-        Scene scene = new Scene(vbox, sceneWidth, sceneHeight);
+        
+        Scene scene = new Scene(borderPane, sceneWidth, sceneHeight);
         scene.getStylesheets().add(Connect4GUI.class.getResource("resources/game.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
@@ -192,7 +193,7 @@ public class Connect4GUI extends Application {
 
     // paints the circle onto the grid, while also updating the back end "Turn".
     public void paintCircle(int row, int column) {
-        Circle rect = new Circle(25, 25, 25);
+        Circle rect = new Circle(12.5, 12.5, 12.5);
         if (presenter.getTurn().equals("Player 1"))
             rect.setFill(Color.YELLOW);
         else {
