@@ -1,4 +1,4 @@
-package connect4;
+
 
 public class Presenter {
 	Connect4GUI view;
@@ -15,10 +15,6 @@ public class Presenter {
 
 	void changeTurn() {
             mm.changeTurn();
-	}
-
-	void addWin(String input) {
-            mm.addWin(input);
 	}
 
 	String getTurn() {

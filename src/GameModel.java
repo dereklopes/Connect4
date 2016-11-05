@@ -1,4 +1,4 @@
-package connect4;
+
 
 import java.util.ArrayList;
 
@@ -7,18 +7,17 @@ public class GameModel {
     Player turn;
     int[][] grid;
 
-    public GameModel() {
+    GameModel() {
         players = new ArrayList<Player>();
-
     }
 
-    public void enterPlayer(String name) {
+    void enterPlayer(String name) {
         Player p = new Player(name);
         players.add(p);
         turn = players.get(0);
     }
 
-    public void changeTurn() {
+    void changeTurn() {
         if (turn.equals(players.get(0))) {
             turn = players.get(1);
         } else {
@@ -26,11 +25,11 @@ public class GameModel {
         }
     }
 
-    public void setGrid(int row, int column) {
+    void setGrid(int row, int column) {
         grid = new int[row][column];
     }
 
-    public String getTurn() {
+    String getTurn() {
         if (turn.equals(players.get(0))) {
             return players.get(0).getName();
         } else {
@@ -38,15 +37,7 @@ public class GameModel {
         }
     }
 
-    public void addWin(String playerName) {
-        for (Player p : players) {
-            if (p.getName().equals(playerName)) {
-                p.addWin();
-            }
-        }
-    }
-
-    public int updateGrid(int column) {
+    int updateGrid(int column) {
         int row;
         boolean lastGrid = false;
         if (lastGrid){
@@ -78,7 +69,7 @@ public class GameModel {
      * @param winCondition number of consecutive pieces in a row needed to win
      * @return The player number of the winner or 0 if no winner was found.
      */
-    public int checkWin(int winCondition) {
+    int checkWin(int winCondition) {
         int currentPlayer, player, streak;
         // check rows
         for(int i = 0; i < grid.length; i++) {

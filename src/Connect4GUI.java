@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package connect4;
+
 
 import java.util.List;
 import javafx.application.Application;
@@ -49,7 +49,7 @@ public class Connect4GUI extends Application {
         draw(stage);
     }
 
-    public void draw(Stage stage) throws Exception {
+    void draw(Stage stage) throws Exception {
 
         // Set size of board (max 20) and win condition (max board size) from params
         final int rows, columns, connectWin;
@@ -177,7 +177,7 @@ public class Connect4GUI extends Application {
 
     // finds the node clicked and returned its index for the backend to update
     // the 2d int array.
-    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> childrens = gridPane.getChildren();
 
@@ -192,7 +192,7 @@ public class Connect4GUI extends Application {
     }
 
     // paints the circle onto the grid, while also updating the back end "Turn".
-    public void paintCircle(int row, int column) {
+    void paintCircle(int row, int column) {
         Circle rect = new Circle(12.5, 12.5, 12.5);
         if (presenter.getTurn().equals("Player 1"))
             rect.setFill(Color.YELLOW);
